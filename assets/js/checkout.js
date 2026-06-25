@@ -23,7 +23,7 @@ function renderSummary() {
   const summary = document.querySelector('#order-summary');
 
   summary.innerHTML = cart.map((item) => {
-    const bundleDetail = item.productId === CONFIG.bundle.id
+    const bundleDetail = getProductType(item) === 'bundle'
       ? '<small style="display:block;color:var(--muted);margin-top:3px">เสื้อ 1 ตัว ราคา 399 บาท + ริสแบนด์ขุนศึก ท.ศ.พ. 2026 จำนวน 1 คู่ ราคา 139 บาท</small>'
       : '';
 
@@ -81,7 +81,33 @@ function fileToBase64(file) {
 }
 
 function getProductType(item) {
-  return item.productId === CONFIG.bundle.id ? 'bundle' : 'shirt';
+  const rawType = String(item.type || '').toLowerCase().trim();
+  const productId = String(item.productId || '').trim();
+  const productName = String(item.name || '').toLowerCase();
+  const unitPrice = Number(item.price || item.unitPrice || 0);
+
+  if (rawType === 'bundle' || rawType === 'promo' || rawType === 'promotion') {
+    return 'bundle';
+  }
+
+  if (rawType === 'shirt' || rawType === 'jersey') {
+    return 'shirt';
+  }
+
+  if (productId === String(CONFIG.bundle.id)) {
+    return 'bundle';
+  }
+
+  if (
+    productName.includes('พี่ขุนช่วยใคร') ||
+    productName.includes('พลัส') ||
+    productName.includes('โปรโมชั่น') ||
+    unitPrice === Number(CONFIG.bundle.price)
+  ) {
+    return 'bundle';
+  }
+
+  return 'shirt';
 }
 
 function setSubmitting(form, isSubmitting) {
@@ -177,11 +203,19 @@ document.querySelector('#order-form')?.addEventListener('submit', async (event) 
       province: formData.get('province').trim(),
       postalCode: postalCode,
       note: '',
-      items: cart.map((item) => ({
-        type: getProductType(item),
-        size: item.size,
-        quantity: Number(item.quantity)
-      })),
+      items: cart.map((item) => {
+        const type = getProductType(item);
+
+        return {
+          type: type,
+          productId: item.productId || '',
+          productName: type === 'bundle'
+            ? 'โครงการพี่ขุนช่วยใคร พลัส+'
+            : 'เสื้อ DSPS Cheer Jersey by KhunSuek DSPS 2026',
+          size: item.size,
+          quantity: Number(item.quantity)
+        };
+      }),
       slip: slip
     };
 
