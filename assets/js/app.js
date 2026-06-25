@@ -7,7 +7,7 @@
     wristbandOrderUrl:'https://khunsuekdsps.github.io/wristband-order',
     bank:{name:'ธนาคารทหารไทยธนชาต (ttb)',accountName:'จิรพล ประสพสุข',accountNumber:'980-2-10437-3'},
     shipping:{normal:45,supportDiscount:10,payable:35},
-    jersey:{id:'JERSEY-2026',name:'เสื้อ DSPS Cheer Jersey by KhunSuek DSPS 2026',price:399,image:'assets/images/jersey-lifestyle.jpg'},
+    jersey:{id:'JERSEY-2026',name:'เสื้อ DSPS Cheer Jersey by KhunSuek DSPS 2026',price:399,image:'assets/images/jersey-lifestyle.jpg',sizes:['6S','5S','4S','3S','SS','S','M','L','XL','2XL','3XL','4XL','5XL','6XL','7XL','8XL']},
     bundle:{id:'BUNDLE-PHI-KHUN',name:'พี่ขุนช่วยใคร',price:499,regular:538,image:'assets/images/jersey-lifestyle.jpg'}
   };
   const CART_KEY='khunsuek_dsps_shirt_cart';
@@ -22,7 +22,19 @@
     if(found) found.quantity+=item.quantity; else cart.push(Object.assign({},item,{key:key}));
     saveCart(cart); toast('เพิ่มลงตะกร้าแล้ว');
   }
-  function itemPrice(item){return item.productId===CONFIG.bundle.id?CONFIG.bundle.price:CONFIG.jersey.price}
+  function getProductType(item){
+    const rawType=String(item.type||'').toLowerCase().trim();
+    const productId=String(item.productId||'').trim();
+    const productName=String(item.name||'').toLowerCase();
+    const rawPrice=Number(item.price||item.unitPrice||0);
+
+    if(rawType==='bundle'||rawType==='promo'||rawType==='promotion')return 'bundle';
+    if(rawType==='shirt'||rawType==='jersey')return 'shirt';
+    if(productId===String(CONFIG.bundle.id))return 'bundle';
+    if(productName.includes('พี่ขุนช่วยใคร')||productName.includes('พลัส')||productName.includes('โปรโมชั่น')||rawPrice===499)return 'bundle';
+    return 'shirt';
+  }
+  function itemPrice(item){return getProductType(item)==='bundle'?CONFIG.bundle.price:CONFIG.jersey.price}
   function calculate(cart){const subtotal=cart.reduce((s,i)=>s+itemPrice(i)*i.quantity,0);const shipping=cart.length?35:0;return{subtotal,shipping,grandTotal:subtotal+shipping}}
   function updateBadges(){const count=getCart().reduce((s,i)=>s+i.quantity,0);qa('[data-cart-count]').forEach(el=>el.textContent=count)}
   function toast(msg){let el=q('.toast');if(!el){el=document.createElement('div');el.className='toast';document.body.appendChild(el)}el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800)}
@@ -38,7 +50,7 @@
     const cart=getCart(), empty=q('#cart-empty'), summary=q('#summary'), sticky=q('#mobile-stick');
     if(!cart.length){list.innerHTML=''; if(empty)empty.classList.remove('hidden'); if(summary)summary.classList.add('hidden'); if(sticky)sticky.classList.add('hidden'); return}
     if(empty)empty.classList.add('hidden'); if(summary)summary.classList.remove('hidden'); if(sticky)sticky.classList.remove('hidden');
-    list.innerHTML=cart.map(item=>{const bundle=item.productId===CONFIG.bundle.id;return '<div class="cart-item"><div class="cart-thumb"><img src="'+item.image+'" alt=""></div><div><div class="tags"><span class="tag tag-gold">'+(bundle?'โปรพี่ขุนช่วยใคร · พรีออเดอร์':'พรีออเดอร์')+'</span></div><h4 style="margin:0 0 6px;font-size:20px">'+item.name+'</h4><div class="muted">'+(bundle?'พรีออเดอร์ · เสื้อ 1 ตัว + ริสแบนด์ 1 คู่ · ':'')+'ไซซ์เสื้อ '+item.size+'</div><div class="qty"><button type="button" data-cart-action="dec" data-key="'+item.key+'">−</button><span>'+item.quantity+'</span><button type="button" data-cart-action="inc" data-key="'+item.key+'">+</button></div></div><div class="side-price" style="text-align:right"><div class="muted">'+money(itemPrice(item))+' / ชุด</div><div style="font-size:24px;font-weight:800;margin:8px 0">'+money(itemPrice(item)*item.quantity)+'</div><button type="button" class="btn btn-light" data-cart-action="remove" data-key="'+item.key+'">ลบรายการ</button></div></div>'}).join('');
+    list.innerHTML=cart.map(item=>{const bundle=getProductType(item)==='bundle';return '<div class="cart-item"><div class="cart-thumb"><img src="'+item.image+'" alt=""></div><div><div class="tags"><span class="tag tag-gold">'+(bundle?'โปรพี่ขุนช่วยใคร · พรีออเดอร์':'พรีออเดอร์')+'</span></div><h4 style="margin:0 0 6px;font-size:20px">'+item.name+'</h4><div class="muted">'+(bundle?'พรีออเดอร์ · เสื้อ 1 ตัว + ริสแบนด์ 1 คู่ · ':'')+'ไซซ์เสื้อ '+item.size+'</div><div class="qty"><button type="button" data-cart-action="dec" data-key="'+item.key+'">−</button><span>'+item.quantity+'</span><button type="button" data-cart-action="inc" data-key="'+item.key+'">+</button></div></div><div class="side-price" style="text-align:right"><div class="muted">'+money(itemPrice(item))+' / ชุด</div><div style="font-size:24px;font-weight:800;margin:8px 0">'+money(itemPrice(item)*item.quantity)+'</div><button type="button" class="btn btn-light" data-cart-action="remove" data-key="'+item.key+'">ลบรายการ</button></div></div>'}).join('');
     const c=calculate(cart); if(q('#subtotal'))q('#subtotal').textContent=money(c.subtotal);if(q('#grand-total'))q('#grand-total').textContent=money(c.grandTotal);if(sticky&&q('span',sticky))q('span',sticky).textContent=money(c.grandTotal);
   }
   function initCart(){
@@ -62,12 +74,18 @@
 
   function initCheckout(){
     const form=q('#order-form'); if(!form)return; const cart=getCart(); if(!cart.length){location.href='cart.html';return} const c=calculate(cart);
-    const sum=q('#order-summary'); if(sum)sum.innerHTML=cart.map(item=>'<div class="summary-row"><span>'+item.name+' (ไซซ์ '+item.size+') × '+item.quantity+(item.productId===CONFIG.bundle.id?'<small style="display:block;color:var(--muted);margin-top:3px">พรีออเดอร์ · เสื้อ 1 ตัว + ริสแบนด์ขุนศึก ท.ศ.พ. 2026 จำนวน 1 คู่ · จัดส่งพร้อมกันเมื่อเสื้อผลิตเสร็จ</small>':'')+'</span><b>'+money(itemPrice(item)*item.quantity)+'</b></div>').join('')+'<div class="summary-row"><span>ยอดสินค้า</span><b>'+money(c.subtotal)+'</b></div><div class="summary-row"><span>ค่าจัดส่งปกติ</span><span>45 บาท</span></div><div class="summary-row"><span>ส่วนลดค่าจัดส่งจากขุนศึก</span><span>- 10 บาท</span></div><div class="summary-row total"><span>ยอดชำระทั้งหมด</span><span>'+money(c.grandTotal)+'</span></div>';
+    const sum=q('#order-summary'); if(sum)sum.innerHTML=cart.map(item=>'<div class="summary-row"><span>'+item.name+' (ไซซ์ '+item.size+') × '+item.quantity+(getProductType(item)==='bundle'?'<small style="display:block;color:var(--muted);margin-top:3px">พรีออเดอร์ · เสื้อ 1 ตัว + ริสแบนด์ขุนศึก ท.ศ.พ. 2026 จำนวน 1 คู่ · จัดส่งพร้อมกันเมื่อเสื้อผลิตเสร็จ</small>':'')+'</span><b>'+money(itemPrice(item)*item.quantity)+'</b></div>').join('')+'<div class="summary-row"><span>ยอดสินค้า</span><b>'+money(c.subtotal)+'</b></div><div class="summary-row"><span>ค่าจัดส่งปกติ</span><span>45 บาท</span></div><div class="summary-row"><span>ส่วนลดค่าจัดส่งจากขุนศึก</span><span>- 10 บาท</span></div><div class="summary-row total"><span>ยอดชำระทั้งหมด</span><span>'+money(c.grandTotal)+'</span></div>';
     if(q('#amount'))q('#amount').textContent=money(c.grandTotal); if(q('#bank-name'))q('#bank-name').textContent=CONFIG.bank.name;if(q('#bank-account-name'))q('#bank-account-name').textContent=CONFIG.bank.accountName;if(q('#bank-account-number'))q('#bank-account-number').textContent=CONFIG.bank.accountNumber;
     qa('[data-copy-account]').forEach(b=>b.addEventListener('click',()=>copy(CONFIG.bank.accountNumber)));
     form.addEventListener('submit',async function(e){
       e.preventDefault();
       if(!form.reportValidity())return;
+
+      const invalidSize=cart.find(item=>!CONFIG.jersey.sizes.includes(String(item.size||'').trim()));
+      if(invalidSize){
+        toast('ไซซ์เสื้อไม่ถูกต้อง: '+invalidSize.size);
+        return;
+      }
 
       const file=q('#slip')&&q('#slip').files[0];
       if(!file){toast('กรุณาแนบสลิปการชำระเงิน');return}
@@ -92,7 +110,7 @@
           postalCode:String(fd.get('postalCode')||'').trim(),
           note:'',
           items:cart.map(item=>({
-            type:item.productId===CONFIG.bundle.id?'bundle':'shirt',
+            type:getProductType(item),
             size:item.size,
             quantity:Number(item.quantity)
           })),
