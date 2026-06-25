@@ -15,7 +15,7 @@ export const CONFIG = {
     image: 'assets/images/header-fashion.jpg',
     mockup: 'assets/images/jersey.jpg',
     price: 399,
-    sizes: ['6S','5S','4S','3S','SS','S','M','L','XL','2XL','3XL','4XL'],
+    sizes: ['6S','5S','4S','3S','SS','S','M','L','XL','2XL','3XL','4XL','5XL','6XL','7XL','8XL'],
     sizeChart: {
       kids: [
         { size: '6S', chest: 26 }, { size: '5S', chest: 28 },
@@ -29,7 +29,11 @@ export const CONFIG = {
         { size: 'XL', chest: 42, length: 29 },
         { size: '2XL', chest: 44, length: 30 },
         { size: '3XL', chest: 46, length: 31 },
-        { size: '4XL', chest: 48, length: 32 }
+        { size: '4XL', chest: 48, length: 32 },
+	{ size: '5XL', chest: 50, length: 32 },
+	{ size: '6XL', chest: 52, length: 32 },
+	{ size: '7XL', chest: 54, length: 32 },
+	{ size: '8XL', chest: 56, length: 32 },
       ],
       note: 'งานตัดเย็บอาจคลาดเคลื่อนเล็กน้อย ไม่เกิน 1 นิ้ว'
     },
