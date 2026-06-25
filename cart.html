@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d4a36">
+  <title>ตะกร้าสินค้า | ขุนศึก ท.ศ.พ.</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<div class="topbar"><div class="container"><span>Not official. Just real support.</span><span>รายได้หลังหักค่าใช้จ่าย นำไปสนับสนุนกิจกรรมของน้อง ๆ</span></div></div>
+<header class="header"><div class="container nav">
+  <a class="brand" href="index.html">
+    <img src="assets/images/logo.png" alt="โลโก้ขุนศึก ท.ศ.พ.">
+    <div><h1>ขุนศึก ท.ศ.พ.</h1><p>ขุนศึกเทพศิรินทร์พุแค สระบุรี</p></div>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html">หน้าแรก</a>
+    <a href="index.html#jersey">สั่งซื้อเสื้อ</a>
+    <a href="index.html#promotion">โครงการ “พี่ขุนช่วยใคร พลัส+”</a>
+    <a href="terms.html">เงื่อนไข</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="icon-btn" href="cart.html" aria-label="ตะกร้าสินค้า">🛒<span class="cart-badge" data-cart-count>0</span></a>
+  </div>
+</div></header>
+
+
+<main>
+<section class="page-head"><div class="container"><h2>ตะกร้าสินค้า</h2><p>ตรวจสอบรายการของคุณก่อนเข้าสู่ขั้นตอนชำระเงิน</p></div></section>
+<section class="section"><div class="container layout-2">
+  <div class="panel list-card">
+    <div id="cart-list"></div>
+    <div id="cart-empty" class="empty hidden">
+      <h4>ยังไม่มีสินค้าในตะกร้า</h4>
+      <p class="muted">เลือกไซซ์เสื้อที่ต้องการ แล้วกลับมาดูที่หน้านี้ได้เลย</p>
+      <a class="btn btn-primary" href="index.html#products">เลือกซื้อสินค้า</a>
+    </div>
+  </div>
+  <aside class="panel list-card" id="summary">
+    <h3 style="margin-top:0">สรุปยอดคำสั่งซื้อ</h3>
+    <div id="bundle-box" class="promo-box hidden"><b>ได้รับสิทธิ์โปรโมชั่นแล้ว</b><small id="bundle-note"></small></div>
+    <div class="summary-row"><span>ยอดสินค้า</span><b id="subtotal">0 บาท</b></div>
+    <div class="summary-row"><span>ค่าส่งปกติ</span><span id="shipping-normal">45 บาท</span></div>
+    <div class="summary-row"><span>ส่วนลดค่าจัดส่งจากขุนศึก</span><span id="shipping-discount">- 10 บาท</span></div>
+    <div class="summary-row total"><span>ยอดรวมสุทธิ</span><span id="grand-total">0 บาท</span></div>
+    <a class="btn btn-primary" href="checkout.html" style="width:100%;margin-top:12px">ชำระเงิน</a>
+  </aside>
+</div></section>
+<div class="mobile-stick hidden" id="mobile-stick"><a class="btn btn-primary" href="checkout.html" style="width:100%;justify-content:space-between">ไปชำระเงิน <span>0 บาท</span></a></div>
+</main>
+
+
+<footer class="footer"><div class="container footer-grid">
+  <div>
+    <b>ขุนศึกเทพศิรินทร์พุแค สระบุรี</b>
+    <p>รายได้หลังหักค่าใช้จ่าย นำไปสนับสนุนกิจกรรมของน้อง ๆ</p>
+    <small>เว็บไซต์นี้จัดทำโดยกลุ่มผู้สนับสนุน ไม่ใช่เว็บไซต์อย่างเป็นทางการของโรงเรียน</small>
+  </div>
+  <div>
+    <b>ติดต่อเรา</b>
+    <p><a href="https://www.facebook.com/khunsuekdsps" target="_blank" rel="noopener">Facebook Page: Khunsuek DSPS</a></p>
+    <small>หากต้องการขอแก้ไขไซซ์หรือข้อมูลจัดส่ง กรุณาทักเพจพร้อมแจ้งเลขคำสั่งซื้อ</small>
+  </div>
+</div></footer>
+<div class="toast"></div>
+
+<script src="assets/js/app.js"></script></body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d4a36">
+  <title>ติดตามคำสั่งซื้อ | ขุนศึก ท.ศ.พ.</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<div class="topbar"><div class="container"><span>Not official. Just real support.</span><span>รายได้หลังหักค่าใช้จ่าย นำไปสนับสนุนกิจกรรมของน้อง ๆ</span></div></div>
+<header class="header"><div class="container nav">
+  <a class="brand" href="index.html">
+    <img src="assets/images/logo.png" alt="โลโก้ขุนศึก ท.ศ.พ.">
+    <div><h1>ขุนศึก ท.ศ.พ.</h1><p>ขุนศึกเทพศิรินทร์พุแค สระบุรี</p></div>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html#products">สินค้า</a>
+    <a href="index.html#promo">โปรโมชั่น</a>
+    <a href="track-order.html">ติดตามออร์เดอร์</a>
+    <a href="terms.html">เงื่อนไข</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="icon-btn" href="cart.html" aria-label="ตะกร้าสินค้า">🛒<span class="cart-badge" data-cart-count>0</span></a>
+  </div>
+</div></header>
+
+
+<main>
+<section class="page-head"><div class="container"><h2>ติดตามคำสั่งซื้อ</h2><p>กรอกเลขคำสั่งซื้อ และเบอร์โทรศัพท์ 4 หลักสุดท้ายหรือเบอร์เต็ม เพื่อตรวจสอบความคืบหน้า</p></div></section>
+<section class="section"><div class="container">
+  <form class="panel list-card" id="tracking-form" style="max-width:760px;margin:0 auto">
+    <div class="form-grid">
+      <div class="field"><label>เลขคำสั่งซื้อ</label><input class="input" id="track-order-id" placeholder="KS260624-0001" required></div>
+      <div class="field"><label>เบอร์โทร 4 หลักสุดท้าย หรือเบอร์เต็ม</label><input class="input" id="track-phone" placeholder="5678" required></div>
+    </div>
+    <div class="utility" style="margin-top:16px"><button class="btn btn-primary" type="submit">ค้นหาคำสั่งซื้อ</button></div>
+  </form>
+
+  <div class="panel list-card hidden" id="tracking-result" style="max-width:860px;margin:22px auto 0">
+    <div id="found-box">
+      <div class="result-header">
+        <div>
+          <span class="status-chip">กำลังตรวจสอบการชำระเงิน</span>
+          <h3 id="found-order-id" style="font-size:34px;margin:12px 0 6px"></h3>
+          <p id="found-message" class="muted" style="margin:0"></p>
+        </div>
+        <div>
+          <div class="muted">ยอดรวมสุทธิ</div>
+          <div id="found-total" style="font-size:28px;font-weight:800"></div>
+        </div>
+      </div>
+      <div class="timeline" id="timeline"></div>
+      <div class="promo-box" style="margin-top:18px"><b>หากต้องการขอแก้ไขไซซ์หรือข้อมูลจัดส่ง</b><small>กรุณาทัก Facebook Page พร้อมแจ้งเลขคำสั่งซื้อ การแก้ไขจะขึ้นอยู่กับสถานะการผลิตและการจัดส่ง</small></div>
+      <div class="utility" style="margin-top:16px"><a id="facebook-link" class="btn btn-light" href="#" target="_blank" rel="noopener">ติดต่อ Facebook Page</a></div>
+    </div>
+    <div id="not-found" class="empty hidden">
+      <h4>ไม่พบคำสั่งซื้อ</h4>
+      <p class="muted">กรุณาตรวจสอบเลขคำสั่งซื้อและเบอร์โทรอีกครั้ง</p>
+    </div>
+  </div>
+</div></section>
+</main>
+
+
+<footer class="footer"><div class="container footer-grid">
+  <div>
+    <b>ขุนศึกเทพศิรินทร์พุแค สระบุรี</b>
+    <p>รายได้หลังหักค่าใช้จ่าย นำไปสนับสนุนกิจกรรมของน้อง ๆ</p>
+    <small>เว็บไซต์นี้จัดทำโดยกลุ่มผู้สนับสนุน ไม่ใช่เว็บไซต์อย่างเป็นทางการของโรงเรียน</small>
+  </div>
+  <div>
+    <b>ติดต่อเรา</b>
+    <p><a href="https://www.facebook.com/khunsuekdsps" target="_blank" rel="noopener">Facebook Page: Khunsuek DSPS</a></p>
+    <small>หากต้องการขอแก้ไขไซซ์หรือข้อมูลจัดส่ง กรุณาทักเพจพร้อมแจ้งเลขคำสั่งซื้อ</small>
+  </div>
+</div></footer>
+<div class="toast"></div>
+
+<script src="assets/js/app.js"></script></body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d4a36">
+  <title>ชำระเงิน | ขุนศึก ท.ศ.พ.</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<div class="topbar"><div class="container"><span>Not official. Just real support.</span><span>รายได้หลังหักค่าใช้จ่าย นำไปสนับสนุนกิจกรรมของน้อง ๆ</span></div></div>
+<header class="header"><div class="container nav">
+  <a class="brand" href="index.html">
+    <img src="assets/images/logo.png" alt="โลโก้ขุนศึก ท.ศ.พ.">
+    <div><h1>ขุนศึก ท.ศ.พ.</h1><p>ขุนศึกเทพศิรินทร์พุแค สระบุรี</p></div>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html">หน้าแรก</a>
+    <a href="index.html#jersey">สั่งซื้อเสื้อ</a>
+    <a href="index.html#promotion">โครงการ “พี่ขุนช่วยใคร พลัส+”</a>
+    <a href="terms.html">เงื่อนไข</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="icon-btn" href="cart.html" aria-label="ตะกร้าสินค้า">🛒<span class="cart-badge" data-cart-count>0</span></a>
+  </div>
+</div></header>
+
+
+<main>
+<section class="page-head"><div class="container"><div class="stepper"><span class="step active">1 ข้อมูลผู้สั่งซื้อ</span><span class="step active">2 ตรวจสอบรายการ</span><span class="step active">3 ชำระเงิน</span><span class="step">4 สำเร็จ</span></div><h2>ชำระเงินและยืนยันคำสั่งซื้อ</h2><p>ชำระเงินได้ตามข้อมูลด้านล่าง พร้อมแนบสลิปเพื่อยืนยันคำสั่งซื้อ</p></div></section>
+<section class="section"><div class="container layout-2">
+  <form class="panel list-card" id="order-form">
+    <h3 style="margin-top:0">ข้อมูลผู้สั่งซื้อและผู้รับสินค้า</h3>
+    <div class="form-grid">
+      <div class="field full"><label>ชื่อ–นามสกุล <span style="color:var(--danger)">*</span></label><input class="input" name="customerName" required autocomplete="name"></div>
+      <div class="field full"><label>เบอร์โทรศัพท์ <span style="color:var(--danger)">*</span></label><input class="input" name="customerPhone" inputmode="numeric" pattern="[0-9\-\s]{9,12}" required autocomplete="tel"></div>
+      <div class="field full"><label>บ้านเลขที่ / หมู่ / ถนน / รายละเอียดที่อยู่ <span style="color:var(--danger)">*</span></label><textarea name="address" required autocomplete="street-address"></textarea></div>
+      <div class="field"><label>ตำบล / แขวง <span style="color:var(--danger)">*</span></label><input class="input" name="subdistrict" required></div>
+      <div class="field"><label>อำเภอ / เขต <span style="color:var(--danger)">*</span></label><input class="input" name="district" required></div>
+      <div class="field"><label>จังหวัด <span style="color:var(--danger)">*</span></label><input class="input" name="province" required autocomplete="address-level1"></div>
+      <div class="field"><label>รหัสไปรษณีย์ <span style="color:var(--danger)">*</span></label><input class="input" name="postalCode" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required autocomplete="postal-code"></div>
+    </div>
+
+    <h3 style="margin-top:30px">ข้อมูลการชำระเงิน</h3>
+    <div class="bank-card">
+      <div class="bank-mini-head">
+        <img class="bank-logo" src="assets/images/ttb-logo.png" alt="โลโก้ธนาคาร ttb">
+        <div><span class="bank-mini-label">ชำระผ่าน</span><h4 class="mobile-bank-title">ธนาคารทหารไทยธนชาต (ttb)</h4></div>
+      </div>
+      <div class="bank-card-copy">
+        <div class="summary-row bank-name-row"><span>ธนาคาร</span><b id="bank-name">ธนาคารทหารไทยธนชาต (ttb)</b></div>
+        <div class="summary-row"><span>ชื่อบัญชี</span><b id="bank-account-name">จิรพล ประสพสุข</b></div>
+        <div class="summary-row"><span>เลขที่บัญชี</span><b id="bank-account-number">980-2-10437-3</b></div>
+        <button type="button" class="btn btn-light" id="copy-account" style="width:100%;margin-top:10px">คัดลอกเลขบัญชี</button>
+        <div class="promo-box" style="margin-top:14px"><b>ยอดที่ต้องชำระ <span id="amount">0 บาท</span></b></div>
+      </div>
+    </div>
+
+    <div class="upload-box" style="margin-top:22px">
+      <h4 style="margin:0 0 10px">แนบหลักฐานการชำระเงิน</h4>
+      <p class="muted" style="margin:0 0 14px">รองรับไฟล์ JPG, PNG, WEBP และ PDF ขนาดไม่เกิน 5 MB</p>
+      <input type="file" id="slip" accept=".jpg,.jpeg,.png,.webp,.pdf">
+    </div>
+
+    <div class="promo-box" style="margin-top:22px"><b>เงื่อนไขสินค้าพรีออเดอร์</b><small>เสื้อเดี่ยวและชุดโปรโมชั่น “พี่ขุนช่วยใคร พลัส+” เป็นสินค้าพรีออเดอร์ทั้งหมด เปิดรับถึงวันที่ 24 กรกฎาคม 2569 คาดว่าจะเริ่มทยอยจัดส่งประมาณวันที่ 1 สิงหาคม 2569 และสินค้าภายในชุดโปรโมชั่นจะจัดส่งพร้อมกันเมื่อเสื้อผลิตเสร็จ</small></div>
+    <div style="margin-top:16px;display:grid;gap:10px">
+      <label style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" name="confirm1" value="yes" style="width:auto;margin-top:4px">ฉันได้ตรวจสอบรุ่นสินค้า ไซซ์ จำนวน ชื่อผู้รับ เบอร์โทร และที่อยู่จัดส่งเรียบร้อยแล้ว</label>
+      <label style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" name="confirm2" value="yes" style="width:auto;margin-top:4px">หากต้องการแก้ไขไซซ์หรือข้อมูลจัดส่ง ฉันจะทัก Facebook Page พร้อมแจ้งเลขคำสั่งซื้อ</label>
+    </div>
+    <div class="utility" style="margin-top:22px">
+      <button class="btn btn-primary desktop-submit" type="submit">ยืนยันคำสั่งซื้อ</button>
+      <a class="btn btn-light" id="facebook-link" href="#" target="_blank" rel="noopener">ติดต่อ Facebook Page</a>
+    </div>
+  </form>
+
+  <aside class="panel list-card">
+    <h3 style="margin-top:0">สรุปรายการ</h3>
+    <div id="order-summary"></div>
+  </aside>
+</div></section>
+<div class="mobile-checkout-bar"><div><small>ตรวจสอบข้อมูลให้ครบ</small><b>ยืนยันคำสั่งซื้อ</b></div><button class="btn btn-primary" type="submit" form="order-form">ยืนยัน</button></div>
+</main>
+
+
+<footer class="footer"><div class="container footer-grid">
+  <div>
+    <b>ขุนศึกเทพศิรินทร์พุแค สระบุรี</b>
+    <p>รายได้หลังหักค่าใช้จ่าย นำไปสนับสนุนกิจกรรมของน้อง ๆ</p>
+    <small>เว็บไซต์นี้จัดทำโดยกลุ่มผู้สนับสนุน ไม่ใช่เว็บไซต์อย่างเป็นทางการของโรงเรียน</small>
+  </div>
+  <div>
+    <b>ติดต่อเรา</b>
+    <p><a href="https://www.facebook.com/khunsuekdsps" target="_blank" rel="noopener">Facebook Page: Khunsuek DSPS</a></p>
+    <small>หากต้องการขอแก้ไขไซซ์หรือข้อมูลจัดส่ง กรุณาทักเพจพร้อมแจ้งเลขคำสั่งซื้อ</small>
+  </div>
+</div></footer>
+<div class="toast"></div>
+
+<script type="module" src="assets/js/checkout.js"></script></body>
+</html>
