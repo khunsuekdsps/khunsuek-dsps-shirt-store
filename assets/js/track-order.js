@@ -245,7 +245,10 @@ document.querySelector('#tracking-form')?.addEventListener('submit', async (even
     url.searchParams.set('postalCode', postalCode);
     url.searchParams.set('_', Date.now().toString());
 
-    const response = await fetch(url.toString(), { method: 'GET' });
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      cache: 'no-store'
+    });
 
     if (!response.ok) {
       throw new Error('ไม่สามารถเชื่อมต่อระบบได้');

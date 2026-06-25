@@ -24,14 +24,31 @@
   }
   function getProductType(item){
     const rawType=String(item.type||'').toLowerCase().trim();
-    const productId=String(item.productId||'').trim();
-    const productName=String(item.name||'').toLowerCase();
+    const productId=String(item.productId||'').toLowerCase().trim();
+    const productName=String(item.name||item.productName||'').toLowerCase();
     const rawPrice=Number(item.price||item.unitPrice||0);
+
+    // ตรวจหลักฐานของโปร 499 ก่อน เพื่อรองรับตะกร้า/ไฟล์เวอร์ชันเก่า
+    if(
+      productId===String(CONFIG.bundle.id).toLowerCase()||
+      productId.includes('bundle')||
+      productId.includes('phi-khun')||
+      productName.includes('พี่ขุนช่วยใคร')||
+      productName.includes('พลัส')||
+      productName.includes('โปรโมชั่น')||
+      rawPrice===499
+    )return 'bundle';
+
+    if(
+      productId===String(CONFIG.jersey.id).toLowerCase()||
+      productId.includes('jersey')||
+      productName.includes('dsps cheer jersey')||
+      rawPrice===399
+    )return 'shirt';
 
     if(rawType==='bundle'||rawType==='promo'||rawType==='promotion')return 'bundle';
     if(rawType==='shirt'||rawType==='jersey')return 'shirt';
-    if(productId===String(CONFIG.bundle.id))return 'bundle';
-    if(productName.includes('พี่ขุนช่วยใคร')||productName.includes('พลัส')||productName.includes('โปรโมชั่น')||rawPrice===499)return 'bundle';
+
     return 'shirt';
   }
   function itemPrice(item){return getProductType(item)==='bundle'?CONFIG.bundle.price:CONFIG.jersey.price}
@@ -41,8 +58,8 @@
   function copy(text){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>toast('คัดลอกเลขบัญชีแล้ว')).catch(()=>fallbackCopy(text))}else fallbackCopy(text)}
   function fallbackCopy(text){const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();toast('คัดลอกเลขบัญชีแล้ว')}
   function initHome(){
-    qa('[data-add-shirt]').forEach(btn=>btn.addEventListener('click',function(){const size=q('#jersey-size')?q('#jersey-size').value:'M';addItem({productId:CONFIG.jersey.id,name:CONFIG.jersey.name,image:CONFIG.jersey.image,size:size,quantity:1,type:'jersey'})}));
-    qa('[data-add-bundle]').forEach(btn=>btn.addEventListener('click',function(){const size=q('#bundle-size')?q('#bundle-size').value:'M';addItem({productId:CONFIG.bundle.id,name:'โปรโมชั่น '+CONFIG.bundle.name,image:CONFIG.bundle.image,size:size,quantity:1,type:'bundle',detail:'พรีออเดอร์: เสื้อ 1 ตัว + ริสแบนด์ขุนศึก ท.ศ.พ. 2026 จำนวน 1 คู่ จัดส่งพร้อมกันเมื่อเสื้อผลิตเสร็จ'})}));
+    qa('[data-add-shirt]').forEach(btn=>btn.addEventListener('click',function(){const size=q('#jersey-size')?q('#jersey-size').value:'M';addItem({productId:CONFIG.jersey.id,name:CONFIG.jersey.name,price:CONFIG.jersey.price,image:CONFIG.jersey.image,size:size,quantity:1,type:'shirt'})}));
+    qa('[data-add-bundle]').forEach(btn=>btn.addEventListener('click',function(){const size=q('#bundle-size')?q('#bundle-size').value:'M';addItem({productId:CONFIG.bundle.id,name:'โครงการ “พี่ขุนช่วยใคร พลัส+”',price:CONFIG.bundle.price,image:CONFIG.bundle.image,size:size,quantity:1,type:'bundle',detail:'พรีออเดอร์: เสื้อ 1 ตัว + ริสแบนด์ขุนศึก ท.ศ.พ. 2026 จำนวน 1 คู่ จัดส่งพร้อมกันเมื่อเสื้อผลิตเสร็จ'})}));
     qa('[data-wristband-link]').forEach(a=>a.href=CONFIG.wristbandOrderUrl);
   }
   function renderCart(){
