@@ -109,11 +109,19 @@
           province:String(fd.get('province')||'').trim(),
           postalCode:String(fd.get('postalCode')||'').trim(),
           note:'',
-          items:cart.map(item=>({
-            type:getProductType(item),
-            size:item.size,
-            quantity:Number(item.quantity)
-          })),
+          items:cart.map(item=>{
+            const productType=getProductType(item);
+            const unitPrice=itemPrice(item);
+
+            return {
+              type:productType,
+              productId:String(item.productId||''),
+              productName:String(item.name||''),
+              unitPrice:Number(unitPrice),
+              size:String(item.size||'').trim(),
+              quantity:Number(item.quantity)
+            };
+          }),
           slip:slip
         };
 

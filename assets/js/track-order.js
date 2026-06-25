@@ -183,13 +183,13 @@ function renderOrder(order) {
           <div class="order-id">เลขออร์เดอร์ ${escapeHtml(order.orderId)}</div>
           <div class="order-title">รายละเอียดคำสั่งซื้อ</div>
         </div>
-        <span class="status-pill">${escapeHtml(normalizeStatus(order.orderStatus))}</span>
+        <span class="status-pill">${escapeHtml(order.orderStatus || 'รับคำสั่งซื้อแล้ว')}</span>
       </div>
 
       ${renderItems(order)}
 
       <div class="status-message">
-        <b>${escapeHtml(order.paymentStatus || 'กำลังดำเนินการ')}</b><br>
+        <b>${escapeHtml(order.orderStatus || 'รับคำสั่งซื้อแล้ว')}</b><br>
         ${escapeHtml(order.statusMessage)}
       </div>
 
