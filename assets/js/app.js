@@ -14,13 +14,59 @@
   const ORDER_KEY='khunsuek_dsps_last_order_v5';
   const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
   const money=n=>new Intl.NumberFormat('th-TH').format(n)+' บาท';
-  function getCart(){try{return JSON.parse(localStorage.getItem(CART_KEY))||[]}catch(e){return[]}}
+  function getCart(){
+    try{
+      const raw=JSON.parse(localStorage.getItem(CART_KEY))||[];
+
+      return raw.map(item=>{
+        const productId=String(item.productId||'').toUpperCase();
+        const productName=String(item.name||item.productName||'');
+
+        const isBundle=
+          productId===String(CONFIG.bundle.id).toUpperCase()||
+          productId.includes('BUNDLE')||
+          productName.includes('พี่ขุนช่วยใคร')||
+          productName.includes('พลัส')||
+          Number(item.price||item.unitPrice||0)===499;
+
+        if(isBundle){
+          return Object.assign({},item,{
+            productId:CONFIG.bundle.id,
+            name:'โครงการ “พี่ขุนช่วยใคร พลัส+”',
+            price:CONFIG.bundle.price,
+            type:'bundle'
+          });
+        }
+
+        return Object.assign({},item,{
+          productId:CONFIG.jersey.id,
+          name:CONFIG.jersey.name,
+          price:CONFIG.jersey.price,
+          type:'shirt'
+        });
+      });
+    }catch(e){
+      return [];
+    }
+  }
   function saveCart(cart){localStorage.setItem(CART_KEY,JSON.stringify(cart)); updateBadges();}
   function addItem(item){
-    const cart=getCart(); const key=item.productId+'__'+(item.size||'');
+    const cart=getCart();
+    const key=item.productId+'__'+(item.size||'');
     const found=cart.find(x=>x.key===key);
-    if(found) found.quantity+=item.quantity; else cart.push(Object.assign({},item,{key:key}));
-    saveCart(cart); toast('เพิ่มลงตะกร้าแล้ว');
+
+    if(found){
+      const newQuantity=Number(found.quantity||0)+Number(item.quantity||0);
+      Object.assign(found,item,{
+        key:key,
+        quantity:newQuantity
+      });
+    }else{
+      cart.push(Object.assign({},item,{key:key}));
+    }
+
+    saveCart(cart);
+    toast('เพิ่มลงตะกร้าแล้ว');
   }
   function getProductType(item){
     const rawType=String(item.type||'').toLowerCase().trim();
@@ -132,6 +178,7 @@
 
             return {
               type:productType,
+              sku:productType==='bundle'?'BUNDLE-499':'SHIRT-399',
               productId:String(item.productId||''),
               productName:String(item.name||''),
               unitPrice:Number(unitPrice),
