@@ -59,6 +59,109 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
+
+function normalizeProductType(item) {
+  const rawType = String(item?.type || item?.productType || '').toLowerCase().trim();
+  const name = String(item?.name || item?.productName || '').toLowerCase();
+  const unitPrice = Number(item?.unitPrice || 0);
+
+  if (rawType === 'bundle' || rawType === 'promo' || rawType === 'promotion') {
+    return 'bundle';
+  }
+
+  if (
+    name.includes('พี่ขุนช่วยใคร') ||
+    name.includes('พลัส') ||
+    name.includes('โปรโมชั่น') ||
+    unitPrice === 499
+  ) {
+    return 'bundle';
+  }
+
+  return 'shirt';
+}
+
+function getProductDisplay(item) {
+  const type = normalizeProductType(item);
+
+  if (type === 'bundle') {
+    return {
+      type: 'bundle',
+      badge: 'โครงการพิเศษ',
+      name: 'พี่ขุนช่วยใคร พลัส+',
+      detail: 'เสื้อ DSPS Cheer Jersey 1 ตัว + ริสแบนด์ 1 คู่',
+      unitPrice: Number(item.unitPrice || 499)
+    };
+  }
+
+  return {
+    type: 'shirt',
+    badge: 'เสื้อเดี่ยว',
+    name: 'เสื้อ DSPS Cheer Jersey 2026',
+    detail: '',
+    unitPrice: Number(item.unitPrice || 399)
+  };
+}
+
+function parseLegacySummary(summary) {
+  return String(summary || '')
+    .split(/,\s*/)
+    .filter(Boolean)
+    .map((part) => {
+      const sizeMatch = part.match(/ไซซ์\s+([^×]+)\s*×\s*(\d+)/);
+      const isBundle = part.includes('พี่ขุนช่วยใคร') || part.includes('โปรโมชั่น') || part.includes('พลัส');
+
+      return {
+        type: isBundle ? 'bundle' : 'shirt',
+        productName: isBundle ? 'พี่ขุนช่วยใคร พลัส+' : 'เสื้อ DSPS Cheer Jersey 2026',
+        size: sizeMatch ? sizeMatch[1].trim() : '-',
+        quantity: sizeMatch ? Number(sizeMatch[2]) : 1,
+        unitPrice: isBundle ? 499 : 399,
+        totalPrice: isBundle ? 499 * (sizeMatch ? Number(sizeMatch[2]) : 1) : 399 * (sizeMatch ? Number(sizeMatch[2]) : 1)
+      };
+    });
+}
+
+function renderItems(order) {
+  const items = Array.isArray(order.items) && order.items.length
+    ? order.items
+    : parseLegacySummary(order.productSummary);
+
+  if (!items.length) {
+    return '';
+  }
+
+  return `
+    <div class="items-block">
+      <div class="items-label">รายการที่สั่งซื้อ</div>
+      ${items.map((item) => {
+        const product = getProductDisplay(item);
+        const quantity = Number(item.quantity || 1);
+        const unitPrice = Number(item.unitPrice || product.unitPrice);
+        const totalPrice = Number(item.totalPrice || unitPrice * quantity);
+        const detail = product.detail
+          ? `<div class="product-meta">${escapeHtml(product.detail)}</div>`
+          : '';
+
+        return `
+          <div class="product-item ${product.type}">
+            <div>
+              <span class="product-badge">${escapeHtml(product.badge)}</span>
+              <div class="product-name">${escapeHtml(product.name)}</div>
+              ${detail}
+              <div class="product-meta">ไซซ์ ${escapeHtml(item.size || '-')} · จำนวน ${quantity}</div>
+            </div>
+            <div class="product-price">
+              <b>${formatMoney(totalPrice)}</b>
+              <small>${formatMoney(unitPrice)} / รายการ</small>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
 function renderOrder(order) {
   const current = statusIndex(order.orderStatus);
   const timeline = STATUS_STEPS.map((_, index) =>
@@ -78,10 +181,12 @@ function renderOrder(order) {
       <div class="order-head">
         <div>
           <div class="order-id">เลขออร์เดอร์ ${escapeHtml(order.orderId)}</div>
-          <div class="order-title">${escapeHtml(order.productSummary)}</div>
+          <div class="order-title">รายละเอียดคำสั่งซื้อ</div>
         </div>
         <span class="status-pill">${escapeHtml(normalizeStatus(order.orderStatus))}</span>
       </div>
+
+      ${renderItems(order)}
 
       <div class="status-message">
         <b>${escapeHtml(order.paymentStatus || 'กำลังดำเนินการ')}</b><br>

@@ -26,6 +26,17 @@
     .order-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
     .order-id{font-size:13px;color:#738078;margin-bottom:6px}
     .order-title{font-size:19px;font-weight:800;line-height:1.5}
+    .items-block{margin-top:16px;display:grid;gap:10px}
+    .items-label{font-size:13px;color:#738078;font-weight:700}
+    .product-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid rgba(13,74,54,.10);border-radius:16px;background:#fffdf8}
+    .product-item.bundle{background:#fff8dc;border-color:#ead278}
+    .product-badge{display:inline-flex;width:max-content;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;margin-bottom:7px;background:#e8f2ed;color:#0d4a36}
+    .product-item.bundle .product-badge{background:#0d4a36;color:#fff}
+    .product-name{font-weight:800;line-height:1.45}
+    .product-meta{font-size:13px;color:#738078;margin-top:4px}
+    .product-price{text-align:right;white-space:nowrap}
+    .product-price b{display:block;font-size:17px;color:#0d4a36}
+    .product-price small{color:#738078}
     .status-pill{display:inline-flex;align-items:center;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:800;background:#e8f2ed;color:#0d4a36;white-space:nowrap}
     .status-message{margin:14px 0 0;padding:14px 16px;border-radius:16px;background:#f7faf8;line-height:1.75}
     .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
@@ -46,8 +57,18 @@
       .order-head{display:block}
       .status-pill{margin-top:12px}
       .order-grid{grid-template-columns:1fr}
+      .product-item{grid-template-columns:1fr}
+      .product-price{text-align:left}
       .order-title{font-size:17px}
     }
+  
+    .home-link-wrap{text-align:center;margin-top:16px}
+    .home-link-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:11px 18px;border-radius:999px;border:1px solid rgba(13,74,54,.18);
+      background:rgba(255,255,255,.88);color:#0d4a36;text-decoration:none;font-weight:700;
+      box-shadow:0 8px 24px rgba(13,74,54,.06);transition:.2s ease}
+    .home-link-btn:hover{transform:translateY(-1px);background:#fff}
+
   </style>
 </head>
 <body>
@@ -90,6 +111,13 @@
       </div>
 
       <div id="tracking-result" class="track-result" aria-live="polite"></div>
+
+      
+      <div class="home-link-wrap">
+        <a class="home-link-btn" href="index.html" aria-label="กลับไปหน้าแรก">
+          ← กลับไปหน้าแรก
+        </a>
+      </div>
 
       <div class="contact-box">
         <p>หากมีปัญหา หรือต้องการสอบถามเพิ่มเติม</p>
